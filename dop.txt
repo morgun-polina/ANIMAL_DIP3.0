@@ -1,0 +1,22 @@
+installed react: npm install redux
+                 npm i react-redux
+                router (марщрутизация):  npm i react-router-dom
+
+библиотека лоя иконок: npm i react-icons
+
+измененные названия файлов:
+Order.js = Event.js
+
+измененные className:
+shop-cart-button = event-button
+let [cartOpen, setCartOpen] = let [eventOpen, serEventOpen]
+shop-cart = event-page
+массив irders = events
+addToOrders = addToEvents()
+showOrders = showEvents
+deleteOrder = deleteEvent()
+
+категории:
+chairs = movies
+tables = entertaiment
+sofa = theatre
