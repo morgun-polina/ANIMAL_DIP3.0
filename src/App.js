@@ -10,6 +10,7 @@ import Categories from './components/Categories';
 import ShowFullItem from './components/ShowFullItem';
 import Account from './components/Account';
 import ErrorPage from './components/ErrorPage';
+import Favourites from './components/Favourites';
 
 class App extends React.Component {
   // const items1 = useSelector((state) => state.events)
@@ -50,7 +51,9 @@ class App extends React.Component {
   render(){
     return (
       <div className="wrapper">
-        <Header events={this.state.events} onDelete={this.deleteEvent}/>
+        <Header/>
+        {/* <Header events={this.state.events} onDelete={this.deleteEvent}/> */}
+
         {/* <Categories chooseCategory={this.chooseCategory}/> */}
 
     {/* <BrowserRouter> */}
@@ -61,6 +64,8 @@ class App extends React.Component {
         <Route path="/one" element={<Account />} />
         <Route path="/two" element={<Account />} />
         <Route path="/account" element={<Account />} />
+        <Route path="/favourites" element={<Favourites events={this.state.events} onDelete={this.deleteEvent}/>} />
+
 
         <Route path="*" element={<ErrorPage/>} />
       </Routes>
