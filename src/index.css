@@ -255,6 +255,10 @@ main .add-to-cart,
     transition: transform 500ms ease;
 }
 
+main .circle-heart{
+   padding: 9px;
+}
+
 main .add-to-cart:hover
 .full-item .add-to-cart:hover{
     transform: scale(1.5) translateY(-5px);

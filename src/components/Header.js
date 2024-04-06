@@ -1,8 +1,20 @@
 import React, { useState } from 'react'
-import {FaShoppingCart} from "react-icons/fa" //change for new icon
+import {FaHeart} from "react-icons/fa" //change for new icon
 import { Link } from 'react-router-dom';
 
 import Event from './Event';
+// import Categories from './Categories';
+
+// const chooseCategory = (category)=> {
+//   if(category === 'all') {
+//     this.setState({currentItems: this.state.items})
+//     return 
+//   }
+  
+//       this.setState({
+//         currentItems: this.state.items.filter(el => el.category === category)
+//       })
+//     }
 
 const showEvents = (props) =>{
   let summa = 0;
@@ -31,6 +43,7 @@ const showNothing = () => {
 
 export default function Header(props) {
   let [eventOpen, setEventOpen] = useState(false); //изначально не активно
+    // this.chooseCategory = this.chooseCategory.bind(this); //для взаимодействия с состояниями
 
   return (
     <header>
@@ -44,7 +57,7 @@ export default function Header(props) {
             </ul>
             
             {/* change icon, объявляем анонимную функцию при нажатии, значние eventOpen меняется на противоложное */}
-            <FaShoppingCart onClick={() => setEventOpen(eventOpen = !eventOpen)} className={`event-button ${eventOpen && 'active'}`}/> 
+            <FaHeart onClick={() => setEventOpen(eventOpen = !eventOpen)} className={`event-button ${eventOpen && 'active'}`}/> 
 
             {eventOpen && (
               <div className='event-page'>
@@ -54,7 +67,11 @@ export default function Header(props) {
             )}
         </div>
         <div className='presentation'></div>
+        {/* <Categories chooseCategory={this.chooseCategory}/> */}
+
     </header>
   )
+
+
 }
 

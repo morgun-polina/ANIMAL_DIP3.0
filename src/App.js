@@ -5,7 +5,7 @@ import {Routes, Route } from 'react-router';
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Items from "./components/items"
+import Items from "./components/Items"
 import Categories from './components/Categories';
 import ShowFullItem from './components/ShowFullItem';
 import Account from './components/Account';
@@ -42,7 +42,7 @@ class App extends React.Component {
     this.state.currentItems = this.state.items; //внцтрь currentItems при загрузке сайта изначально помещаем все элементы, которые находятся в массиве items
     this.addToEvents = this.addToEvents.bind(this); //для взаимодействия с состояниями
     this.deleteEvent = this.deleteEvent.bind(this); //для взаимодействия с состояниями
-    this.chooseCategory = this.chooseCategory.bind(this); //для взаимодействия с состояниями
+    // this.chooseCategory = this.chooseCategory.bind(this); //для взаимодействия с состояниями
     this.onShowItem = this.onShowItem.bind(this); //для взаимодействия с состояниями
 
 
@@ -51,6 +51,7 @@ class App extends React.Component {
     return (
       <div className="wrapper">
         <Header events={this.state.events} onDelete={this.deleteEvent}/>
+        {/* <Categories chooseCategory={this.chooseCategory}/> */}
 
     {/* <BrowserRouter> */}
       <Routes>
@@ -65,7 +66,6 @@ class App extends React.Component {
       </Routes>
     {/* </BrowserRouter> */}
 
-        <Categories chooseCategory={this.chooseCategory}/>
         {/* <Items onShowItem={this.onShowItem} items={this.state.currentItems} onAdd={this.addToEvents}/> */}
 
         {this.state.showFullItem && <ShowFullItem onAdd={this.addToEvents} onShowItem={this.onShowItem} item={this.state.fullItem}/>}
@@ -76,19 +76,19 @@ class App extends React.Component {
 
   onShowItem(item){
     this.setState({fullItem: item})
-    this.setState({showFullItem: !this.state.showFullItem}) /*ставим противоположнео значение*/
+    this.setState({showFullItem: !this.state.showFullItem}) /*ставим противоположное значение*/
   }
 
-  chooseCategory(category){
-if(category === 'all') {
-  this.setState({currentItems: this.state.items})
-  return 
-}
+//   chooseCategory(category){
+// if(category === 'all') {
+//   this.setState({currentItems: this.state.items})
+//   return 
+// }
 
-    this.setState({
-      currentItems: this.state.items.filter(el => el.category === category)
-    })
-  }
+//     this.setState({
+//       currentItems: this.state.items.filter(el => el.category === category)
+//     })
+//   }
 
   deleteEvent(id){
     this.setState({events: this.state.events.filter(el => el.id !== id)})
