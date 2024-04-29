@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
-import {eventsReducer} from './events-reducer'
+import {animalsReducer} from './animalsReducer'
 
 
 export const rootReducer = combineReducers({
-    events: eventsReducer
+    animals: animalsReducer
     //редьюсер для юзера. хранпить данные для конретного юзера и ихменять их по необходимости
     // user:
 })

@@ -1,114 +1,177 @@
-// import './App.css';
-import React from 'react';
-import {Routes, Route } from 'react-router';
-// import {useSelector} from 'react-redux'
-
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Items from "./components/Items"
-import Categories from './components/Categories';
+import React, { Component, Fragment, useEffect } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom'; // Добавляем Navigate
+import { BrowserRouter as Router, Link, useLocation } from 'react-router-dom';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import Items from './components/Items';
+import Views from './components/Views';
 import ShowFullItem from './components/ShowFullItem';
 import Account from './components/Account';
 import ErrorPage from './components/ErrorPage';
 import Favourites from './components/Favourites';
+import ItemDetails from './components/ItemDetails';
+import LoginPage from './components/LoginPage';
+import RegisterPage from './components/RegisterPage';
+import AboutUs from './components/AboutUs';
 
-class App extends React.Component {
-  // const items1 = useSelector((state) => state.events)
-  constructor(props){ /*вот вместо этого бд ввинтить*/    
-  super(props)
+function SmoothScroll({ children }) {
+  const location = useLocation();
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const handleScroll = () => {
+      document.documentElement.style.setProperty('--scrollTop', `${window.scrollY}px`);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const smoothScrollAnchors = document.querySelectorAll('a[href^="#"]');
+    smoothScrollAnchors.forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const targetId = this.getAttribute('href').slice(1);
+        const targetElement = document.getElementById(targetId);
+
+        if (targetElement) {
+          gsap.to(window, { scrollTo: { y: targetElement, autoKill: false }, duration: 0.5 });
+        }
+      });
+    });
+  }, [location]);
+
+  return <>{children}</>;
+}
+
+class App extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
-      events:[],
-      currentItems:[],
+      animals: [],
+      currentItems: [],
       items: [
         {
-        id: 1, 
-        title: 'Animal world',
-        img: 'zoo1.jpg',
-        desc: 'Visit Minsk zoo to have unforgettable emotions',
-        category: 'Развлечения',
-        price: '20 BYN',
+          id: 1,
+          title: 'Зубр',
+          img: 'zubr.jpg',
+          desc: 'Вид парнокопытных, последний представитель диких быков в Европе',
+          view: 'Млекопитающие',
+          
         },
         {
-          id: 2, 
-          title: 'Щелкунчик',
-          img: 'nutcracker.jpg',
-          desc: 'Посетити новую постановку в "Большом театре"',
-          category: 'Театр',
-          price: 'от 20 BYN'
-          },
+          id: 2,
+          title: 'Черный аист',
+          img: 'aist.jpg',
+          desc: 'Птица из семейства аистовых, которая обитает в лесной зоне Евразии, стараясь избегать людей"',
+          view: 'Птицы',
+         
+        },
+        {
+          id: 3,
+          title: 'Обыкновенный усач',
+          img: 'usach.jpg',
+          desc: 'Пресноводная, речная,  достигающая в длину 85—90 см"',
+          view: 'Рыбы',
+         
+        },
+        {
+          id: 4,
+          title: 'Барсук',
+          img: 'bars.jpg',
+          desc: 'Хищник семейства куницевых, типичный норник. Обитает в лесах и лесостепях"',
+          view: 'Млекопитающие',
+         
+        },
       ],
       showFullItem: false,
       fullItem: {},
-    }
-    this.state.currentItems = this.state.items; //внцтрь currentItems при загрузке сайта изначально помещаем все элементы, которые находятся в массиве items
-    this.addToEvents = this.addToEvents.bind(this); //для взаимодействия с состояниями
-    this.deleteEvent = this.deleteEvent.bind(this); //для взаимодействия с состояниями
-    // this.chooseCategory = this.chooseCategory.bind(this); //для взаимодействия с состояниями
-    this.onShowItem = this.onShowItem.bind(this); //для взаимодействия с состояниями
-
-
+    };
+    this.addToAnimals = this.addToAnimals.bind(this);
+    this.deleteAnimal = this.deleteAnimal.bind(this);
+    this.chooseView = this.chooseView.bind(this);
+    this.onShowItem = this.onShowItem.bind(this);
   }
-  render(){
+
+  componentDidMount() {
+    gsap.registerPlugin(ScrollTrigger);
+  }
+
+  render() {
     return (
-      <div className="wrapper">
-        <Header/>
-        {/* <Header events={this.state.events} onDelete={this.deleteEvent}/> */}
-
-        {/* <Categories chooseCategory={this.chooseCategory}/> */}
-
-    {/* <BrowserRouter> */}
-      <Routes>
-        <Route path="/" element={<Items onShowItem={this.onShowItem} items={this.state.currentItems} onAdd={this.addToEvents}/>} />
-
-        <Route path="/main" element={<Items onShowItem={this.onShowItem} items={this.state.currentItems} onAdd={this.addToEvents} />} />
-        <Route path="/one" element={<Account />} />
-        <Route path="/two" element={<Account />} />
-        <Route path="/account" element={<Account />} />
-        <Route path="/favourites" element={<Favourites events={this.state.events} onDelete={this.deleteEvent}/>} />
-
-
-        <Route path="*" element={<ErrorPage/>} />
-      </Routes>
-    {/* </BrowserRouter> */}
-
-        {/* <Items onShowItem={this.onShowItem} items={this.state.currentItems} onAdd={this.addToEvents}/> */}
-
-        {this.state.showFullItem && <ShowFullItem onAdd={this.addToEvents} onShowItem={this.onShowItem} item={this.state.fullItem}/>}
-        <Footer />
-      </div>
+      <SmoothScroll>
+        <div className="wrapper">
+          <Routes>
+            {/* Используем Navigate для переадресации */}
+            <Route path="/" element={<Navigate to="/main" />} />
+            <Route path="/main" element={(
+              <Fragment>
+                <Header onSearch={this.handleSearch} />
+                <Views chooseView={this.chooseView} />
+                <Items onShowItem={this.onShowItem} items={this.state.currentItems} onAdd={this.addToAnimals} />
+              </Fragment>
+            )} />
+            <Route path="/favourites" element={(
+              <Fragment>
+                <Header onSearch={this.handleSearch} />
+                <Favourites animals={this.state.animals} onDelete={this.deleteAnimal} />
+              </Fragment>
+            )} />
+            <Route path="/about" element={< AboutUs />} />
+            <Route path="*" element={<ErrorPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/item/:id" element={<ItemDetails items={this.state.items} />} />
+          </Routes>
+          {this.state.showFullItem && <ShowFullItem onAdd={this.addToAnimals} onShowItem={this.onShowItem} item={this.state.fullItem} />}
+          <Footer />
+        </div>
+      </SmoothScroll>
     );
   }
 
-  onShowItem(item){
-    this.setState({fullItem: item})
-    this.setState({showFullItem: !this.state.showFullItem}) /*ставим противоположное значение*/
+  handleSearch = (animal) => {
+    const searchQuery = animal.target.value;
+    const filteredItems = this.state.items.filter(item =>
+      item.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    this.setState({ currentItems: filteredItems });
   }
 
-//   chooseCategory(category){
-// if(category === 'all') {
-//   this.setState({currentItems: this.state.items})
-//   return 
-// }
-
-//     this.setState({
-//       currentItems: this.state.items.filter(el => el.category === category)
-//     })
-//   }
-
-  deleteEvent(id){
-    this.setState({events: this.state.events.filter(el => el.id !== id)})
+  onShowItem(item) {
+    this.setState({ fullItem: item, showFullItem: !this.state.showFullItem });
   }
 
-  addToEvents(item){
+  chooseView(view) {
+    if (view === 'all') {
+      this.setState({ currentItems: this.state.items });
+      return;
+    }
+    this.setState({
+      currentItems: this.state.items.filter(el => el.view === view),
+    });
+  }
+
+  deleteAnimal(id) {
+    this.setState({ animals: this.state.animals.filter(el => el.id !== id) });
+  }
+
+  addToAnimals(item) {
     let isInArray = false;
-    this.state.events.forEach(el => {
-      if(el.id === item.id){
+    this.state.animals.forEach(el => {
+      if (el.id === item.id) {
         isInArray = true;
       }
-    })
-    if(!isInArray){
-          this.setState({events: [...this.state.events, item] }) //добавление к текущему элементу элемента, который передастся в качестве параметра
-
+    });
+    if (!isInArray) {
+      this.setState({ animals: [...this.state.animals, item] });
     }
   }
 }

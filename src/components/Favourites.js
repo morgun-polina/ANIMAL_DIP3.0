@@ -1,20 +1,19 @@
 import React from 'react'
-import Event from './Event';
+import Animal from './Animal';
 
 
-const showEvents = (props) =>{
+const showAnimals= (props) =>{
     let summa = 0;
-    props.events.forEach(el => {
+    props.animals.forEach(el => {
       summa += Number.parseFloat(el.price);
     });
     return(
       <div>
-        {/*фигурные скобки для вывода html-кода*/}
-        {props.events.map(el => ( 
-          <Event onDelete={props.onDelete} key={el.id} item = {el}/>
+      
+        {props.animals.map(el => ( 
+          <Animal onDelete={props.onDelete} key={el.id} item = {el}/>
         ))}
-        {/* ?  #6 8:38 format - для корректного отображения суммы*/}
-        <p className='summa'>Сумма: {new Intl.NumberFormat().format(summa)}</p> 
+       
       </div>
     )
   }
@@ -29,9 +28,9 @@ const showEvents = (props) =>{
 
 function Favourites(props) {
   return (
-    <div className='event-page'>
-    {props.events.length > 0 ?
-    showEvents(props) : showNothing()}
+    <div className='animal-page'>
+    {props.animals.length > 0 ?
+    showAnimals(props) : showNothing()}
   </div>
   )
 }

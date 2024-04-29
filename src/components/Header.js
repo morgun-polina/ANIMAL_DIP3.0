@@ -1,64 +1,97 @@
-import React, { useState } from 'react'
-import {FaHeart} from "react-icons/fa" //change for new icon
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { FaHeart } from 'react-icons/fa';
+import { Link, useLocation } from 'react-router-dom';
 
-import Event from './Event';
+export default function Header({ onSearch }) {
+  const location = useLocation();
 
-// const showEvents = (props) =>{
-//   let summa = 0;
-//   props.events.forEach(el => {
-//     summa += Number.parseFloat(el.price);
-//   });
-//   return(
-//     <div>
-//       {/*фигурные скобки для вывода html-кода*/}
-//       {props.events.map(el => ( 
-//         <Event onDelete={props.onDelete} key={el.id} item = {el}/>
-//       ))}
-//       {/* ?  #6 8:38 format - для корректного отображения суммы*/}
-//       <p className='summa'>Сумма: {new Intl.NumberFormat().format(summa)}</p> 
-//     </div>
-//   )
-// }
+  useEffect(() => {
+    const handleScroll = () => {
+      document.documentElement.style.setProperty('--scrollTop', `${window.scrollY}px`); 
+    };
 
-// const showNothing = () => {
-//   return(
-//     <div className='empty'>
-//       <h2>Нет избранного</h2>
-//     </div>
-//   )
-// }
+    window.addEventListener('scroll', handleScroll);
 
-export default function Header(props) {
-  // let [eventOpen, setEventOpen] = useState(false); //изначально не активно
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const init = () => {
+      const animalsToggle = document.querySelector('.animals-toggle');
+      const animalsSubmenu = document.querySelector('.animals-submenu');
+
+      if (animalsToggle && animalsSubmenu) {
+        const handleClick = (e) => {
+          e.preventDefault();
+          animalsSubmenu.classList.toggle('show');
+        };
+
+        animalsToggle.addEventListener('click', handleClick);
+
+        return () => {
+          animalsToggle.removeEventListener('click', handleClick);
+        };
+      }
+    };
+    document.addEventListener('DOMContentLoaded', init);
+
+    return () => {
+      document.removeEventListener('DOMContentLoaded', init);
+    };
+  }, []);
+
+  const isMainPage = location.pathname === '/main';
 
   return (
     <header>
-        <div>
-            <Link to='main' className='logo'>Events</Link>
-            
-            <ul className='nav'>
-              <Link to='one' className='nav-li'>Кино</Link>
-              <Link to='two' className='nav-li'>Фестивали</Link>  
-              <Link to='Account' className='nav-li'>Кабинет пользователя</Link>
-            </ul>
-            <Link to='favourites'><FaHeart  className='event-button'/> </Link>
+      <div className="header">
+          <Link to="/main" className="logo">
+            Краснокнижные животные
+          </Link>
+          <Link to="/about" className="nav-li"> 
+            О нас
+          </Link>
+          <Link to="/favourites">
+           
+            Избранное
+          </Link>
+          {/* Отображаем d "search-bar" только на странице /main */}
+          {isMainPage && (
+            <div className="search-bar">
+              <input type="text" placeholder="Поиск..." onChange={onSearch} />
+            </div>
+          )}
+          <ul className="nav">
+            <Link to="/login" className="nav-li">
+              Авторизация
+            </Link>
+          </ul>
+      </div>
+      {/* Отображаем "presentation" только на странице /main */}
+      {isMainPage && (
+        <div className="presentation">
+          <div class="wrapper">
+        <div class="content">
+            <header class="headers">
+                <div class="layers">
+                    <div class="layer__header">
+                        <div class="layers__caption">Web-приложение </div>
+                        <div class="layers__title">Краснакнижные животные</div>
+                    </div>
+                    <div class="layer layers__base" ></div>
+                    <div class="layer layers__middle"></div>
+                    <div class="layer layers__front" ></div>
+                </div>
+            </header>
+        
+           
 
-            {/* <FaHeart onClick={() => setEventOpen(eventOpen = !eventOpen)} className={`event-button ${eventOpen && 'active'}`}/> */}
-            {/* change icon, объявляем анонимную функцию при нажатии, значние eventOpen меняется на противоложное */}
-
-            {/* {eventOpen && (
-              <div className='event-page'>
-                {props.events.length > 0 ?
-                showEvents(props) : showNothing()}
-              </div>
-            )} */}
         </div>
-        <div className='presentation'></div>
-
+    </div>
+        </div>
+      )}
     </header>
-  )
-
-
+  );
 }
-

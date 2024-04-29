@@ -9,7 +9,7 @@ export class ShowFullItem extends Component {
         <h2>{this.props.item.title}</h2>
         <p>{this.props.item.desc}</p>
         <b>{this.props.item.price}</b> 
-        {/* <b>{this.props.item.price}BYN</b> */}
+        
         <div className='add-to-cart' onClick = {() => this.props.onAdd(this.props.item)}>+</div>
         </div>
       </div>

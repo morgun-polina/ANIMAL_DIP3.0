@@ -10,10 +10,10 @@ export const itemsAction = () => {
         title: 'Animal world',
         img: 'zoo1.jpg',
         desc: 'Visit Minsk zoo to have unforgettable emotions',
-        category: 'Развлечения',
-        price: '20 BYN',
+        view: 'Развлечения',
+        categor: '20 BYN',
       },
     ];
-    dispatch({ type: 'FETCH_EVENT', payload: data });
+    dispatch({ type: 'FETCH_ANIMAL', payload: data });
   }
 }
